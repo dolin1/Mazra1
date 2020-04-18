@@ -16,7 +16,7 @@ execute =""
 host =""
 upload_dest =""
 port=0
-
+scanRange= [0,0]
 def usage():
 	print "-" * 100
 	print "Mazra Net Tools"
@@ -27,6 +27,10 @@ def usage():
 	print "-e --execute    ============================= Execute the given file after receiving a connection"
 	print "-c --commShell  ============================= Initiate a Command Shell"
 	print "-u --upload     ============================= upload/write a file to the destination you have connected to"
+	print "-x --portscan   ============================= scan host for open ports, target must be set"
+	print "port scan usage: python Mazra.py -t 192.168.1.12 -x 80 143"
+	print "-n --netscan    ============================= Enumerate Network, target must be set"
+	print "net scan usage: python Mazra.py -t 192.168.1.0 -n 1 254"
 	print "*" * 100
 	print "-" * 100
 
@@ -150,15 +154,22 @@ try:
 			print "Starting Listener"
 		elif o in ("-x","--portscan"):
 			pScan=True
-			result=a
-			if(result=='*'):
-				scanRange=6000
+			stri=[" "," "]
+			result=a.split(" ")
+			stri[0]=result[0]
+			stri[1]=result[1]
+			if(result=="all"):
+				scanRange[0]=1
+				scanRange[1]=6000
 			else:
-				scanRange= int(a)
+				scanRange[0]= int(stri[0])
+				scanRange[1]= int(stri[1])
 			print "Starting Port Scan"
 		elif o in ("-n","--netscan"):
 			nScan=True
-			subset="1-254"
+			stri =[" "," "]
+			result=a.split(" ")
+			stri1
 			a.strip()
 			if(a=='*'):
 				scanRange=254
@@ -179,7 +190,7 @@ try:
 		print "-" * 60
 		remoteServerIP=socket.gethostbyname(host)
 		print "Open Ports: "
-		for nPort in range(1,scanRange):
+		for nPort in range(scanRange[0],scanRange[1]):
                 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                		result = sock.connect_ex((remoteServerIP,nPort))
                 	
